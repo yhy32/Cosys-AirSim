@@ -21,7 +21,7 @@ namespace airlib
         virtual ~MultirotorRpcLibServer();
 
     protected:
-        virtual MultirotorApiBase* getVehicleApi(const std::string& vehicle_name) override
+        virtual MultirotorApiBase* getMultirotorApi(const std::string& vehicle_name)
         {
             return static_cast<MultirotorApiBase*>(RpcLibServerBase::getVehicleApi(vehicle_name));
         }

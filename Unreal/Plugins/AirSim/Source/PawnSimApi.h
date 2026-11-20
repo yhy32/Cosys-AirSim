@@ -29,6 +29,8 @@
 
 #include "PawnEvents.h"
 
+class Go2PawnSimApi;
+
 class PawnSimApi : public msr::airlib::VehicleSimApiBase
 {
 public: //types
@@ -115,12 +117,13 @@ public: //implementation of VehicleSimApiBase
 protected: //additional interface for derived class
     virtual void pawnTick(float dt);
     void setPoseInternal(const Pose& pose, bool ignore_collision);
-    virtual msr::airlib::VehicleApiBase* getVehicleApiBase() const;
     msr::airlib::Kinematics* getKinematics();
     msr::airlib::Environment* getEnvironment();
 
 public: //Unreal specific methods
     PawnSimApi(const Params& params);
+    virtual msr::airlib::VehicleApiBase* getVehicleApiBase() const;
+    virtual Go2PawnSimApi* asGo2() { return nullptr; }
 
     //returns one of the cameras attached to the pawn
     const APIPCamera* getCamera(const std::string& camera_name) const;

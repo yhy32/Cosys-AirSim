@@ -22,6 +22,8 @@ namespace airlib
         CarRpcLibServer(ApiProvider* api_provider, string server_address, uint16_t port = RpcLibPort);
         virtual ~CarRpcLibServer();
 
+        static void bindCarMethods(void* server, std::function<CarApiBase*(const std::string&)> get_car_api);
+
     protected:
         virtual CarApiBase* getVehicleApi(const std::string& vehicle_name) override
         {

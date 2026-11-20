@@ -54,9 +54,11 @@ void PawnSimApi::initialize()
 
     setupLightsFromSettings(params_.lights);
 
-    //add listener for pawn's collision event
-    params_.pawn_events->getCollisionSignal().connect_member(this, &PawnSimApi::onCollision);
-    params_.pawn_events->getPawnTickSignal().connect_member(this, &PawnSimApi::pawnTick);
+    // Blueprint-only pawns can be ticked directly by their simulation mode.
+    if (params_.pawn_events != nullptr) {
+        params_.pawn_events->getCollisionSignal().connect_member(this, &PawnSimApi::onCollision);
+        params_.pawn_events->getPawnTickSignal().connect_member(this, &PawnSimApi::pawnTick);
+    }
 }
 
 void PawnSimApi::setStartPosition(const FVector& position, const FRotator& rotator)

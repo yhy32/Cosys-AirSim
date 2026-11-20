@@ -1765,6 +1765,13 @@ APawn* ASimModeBase::createVehiclePawn(const AirSimSettings::VehicleSetting& veh
     // compute initial pose
     FVector spawn_position = uu_origin.GetLocation();
     Vector3r settings_position = vehicle_setting.position;
+    if (vehicle_setting.vehicle_type == AirSimSettings::kVehicleTypeGo2) {
+        // Go2 can specify horizontal spawn offsets while leaving Z unset for ground alignment.
+        for (int axis = 0; axis < 3; ++axis) {
+            if (std::isnan(settings_position[axis]))
+                settings_position[axis] = 0;
+        }
+    }
     if (!VectorMath::hasNan(settings_position))
         spawn_position = getGlobalNedTransform().fromGlobalNed(settings_position);
 

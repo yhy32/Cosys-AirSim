@@ -42,15 +42,22 @@ namespace airlib
     CarRpcLibServer::CarRpcLibServer(ApiProvider* api_provider, string server_address, uint16_t port)
         : RpcLibServerBase(api_provider, server_address, port)
     {
-        (static_cast<rpc::server*>(getServer()))->bind("getCarState", [&](const std::string& vehicle_name) -> CarRpcLibAdaptors::CarState {
-            return CarRpcLibAdaptors::CarState(getVehicleApi(vehicle_name)->getCarState());
+        bindCarMethods(getServer(), [this](const std::string& vehicle_name) {
+            return getVehicleApi(vehicle_name);
         });
+    }
 
-        (static_cast<rpc::server*>(getServer()))->bind("setCarControls", [&](const CarRpcLibAdaptors::CarControls& controls, const std::string& vehicle_name) -> void {
-            getVehicleApi(vehicle_name)->setCarControls(controls.to());
+    void CarRpcLibServer::bindCarMethods(void* server, std::function<CarApiBase*(const std::string&)> get_car_api)
+    {
+        auto* rpc_server = static_cast<rpc::server*>(server);
+        rpc_server->bind("getCarState", [get_car_api](const std::string& vehicle_name) -> CarRpcLibAdaptors::CarState {
+            return CarRpcLibAdaptors::CarState(get_car_api(vehicle_name)->getCarState());
         });
-        (static_cast<rpc::server*>(getServer()))->bind("getCarControls", [&](const std::string& vehicle_name) -> CarRpcLibAdaptors::CarControls {
-            return CarRpcLibAdaptors::CarControls(getVehicleApi(vehicle_name)->getCarControls());
+        rpc_server->bind("setCarControls", [get_car_api](const CarRpcLibAdaptors::CarControls& controls, const std::string& vehicle_name) {
+            get_car_api(vehicle_name)->setCarControls(controls.to());
+        });
+        rpc_server->bind("getCarControls", [get_car_api](const std::string& vehicle_name) -> CarRpcLibAdaptors::CarControls {
+            return CarRpcLibAdaptors::CarControls(get_car_api(vehicle_name)->getCarControls());
         });
     }
 

@@ -650,6 +650,26 @@ namespace airlib
         pimpl_->stop();
     }
 
+    void RpcLibServerBase::bindGo2Methods(void* server, std::function<std::vector<std::string>()> list_vehicles,
+        std::function<void(const std::vector<float>&, const std::string&)> set_angles,
+        std::function<std::vector<float>(const std::string&)> get_angles,
+        std::function<std::vector<std::vector<float>>(const std::string&)> get_state,
+        std::function<void(const std::vector<float>&, const std::string&)> set_offset,
+        std::function<void(const std::vector<float>&, const std::vector<float>&, const std::vector<float>&, const std::string&)> set_state,
+        std::function<std::vector<std::vector<float>>(const std::vector<float>&, const std::vector<float>&, const std::vector<float>&, const std::string&)> move_state,
+        std::function<std::vector<std::vector<double>>(float, const std::string&)> get_obstacles)
+    {
+        auto* rpc_server = static_cast<rpc::server*>(server);
+        rpc_server->bind("listGo2Vehicles", std::move(list_vehicles));
+        rpc_server->bind("setGo2JointAngles", std::move(set_angles));
+        rpc_server->bind("getGo2JointAngles", std::move(get_angles));
+        rpc_server->bind("getGo2State", std::move(get_state));
+        rpc_server->bind("setGo2BaseOffset", std::move(set_offset));
+        rpc_server->bind("setGo2State", std::move(set_state));
+        rpc_server->bind("moveGo2State", std::move(move_state));
+        rpc_server->bind("getGo2NearbyObstacles", std::move(get_obstacles));
+    }
+
     void* RpcLibServerBase::getServer() const
     {
         return &pimpl_->server;

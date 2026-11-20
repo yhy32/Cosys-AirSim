@@ -4,6 +4,8 @@
 #ifndef air_RpcLibServerBase_hpp
 #define air_RpcLibServerBase_hpp
 
+#include <functional>
+
 #include "common/Common.hpp"
 #include "api/ApiServerBase.hpp"
 #include "api/ApiProvider.hpp"
@@ -33,6 +35,14 @@ namespace airlib
 
     protected:
         void* getServer() const;
+        static void bindGo2Methods(void* server, std::function<std::vector<std::string>()> list_vehicles,
+            std::function<void(const std::vector<float>&, const std::string&)> set_angles,
+            std::function<std::vector<float>(const std::string&)> get_angles,
+            std::function<std::vector<std::vector<float>>(const std::string&)> get_state,
+            std::function<void(const std::vector<float>&, const std::string&)> set_offset,
+            std::function<void(const std::vector<float>&, const std::vector<float>&, const std::vector<float>&, const std::string&)> set_state,
+            std::function<std::vector<std::vector<float>>(const std::vector<float>&, const std::vector<float>&, const std::vector<float>&, const std::string&)> move_state,
+            std::function<std::vector<std::vector<double>>(float, const std::string&)> get_obstacles);
 
         virtual VehicleApiBase* getVehicleApi(const std::string& vehicle_name)
         {

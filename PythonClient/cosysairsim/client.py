@@ -1689,6 +1689,10 @@ class VehicleClient:
         """
         return self.client.call('listVehicles')
 
+    def listGo2Vehicles(self):
+        """List active Go2 vehicle names in Go2 or Hybrid mode."""
+        return self.client.call('listGo2Vehicles')
+
     def getSettingsString(self):
         """
         Fetch the settings text being used by Cosys-AirSim

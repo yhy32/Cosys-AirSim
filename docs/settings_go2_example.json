@@ -1,0 +1,27 @@
+{
+  "SettingsVersion": 2,
+  "SimMode": "Go2",
+  "ViewMode": "FlyWithMe",
+  "Vehicles": {
+    "go2": {
+      "VehicleType": "go2",
+      "AutoCreate": true,
+      "EnableCollisions": false,
+      "IsFpvVehicle": true,
+      "X": 0.0,
+      "Y": -1.0,
+      "Yaw": 0,
+      "Cameras": {
+        "fpv": { "X": 0.28, "Y": 0, "Z": -0.33 }
+      }
+    },
+    "go2_2": {
+      "VehicleType": "go2",
+      "AutoCreate": true,
+      "EnableCollisions": false,
+      "X": 0.0,
+      "Y": 1.0,
+      "Yaw": 90
+    }
+  }
+}
